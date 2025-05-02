@@ -95,12 +95,9 @@ const promiseHandler = (promises, concurrency) => {
   const pendingPromises = [...promises];
   
   const bootRunner = () => {
-    if(!result.results.length && !pending) {
-      let starters = pendingPromises.splice(0, currentConcurrency)
-
-      starters.forEach((cb) => {
-        runPromise(cb);
-    });
+    while (pending < currentConcurrency && pendingPromises.length > 0) {
+      const next = pendingPromises.shift();
+      runPromise(next);
     }
   }
 
@@ -148,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let nextBatch = results.map(({url}) => {
         totalRequests++
         return async () => {
-            fetch(url).then((res) => {
+            return fetch(url).then((res) => {
               return res.json()
             }).then((res) => {
               createTile(res)
@@ -159,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if(next) {
         totalRequests++
-        await fetchPokemon(next)
+        fetchPokemon(next)
     }
 
     addPromises(nextBatch);
@@ -173,11 +170,11 @@ const {results, failures} =  await data
 
 
 results.forEach(result => {
-    console.log('✅ Success:', result);
+    console.log('✅ Success:');
 })
 
 failures.forEach(result => {
-  console.error('❌ Error:', result);
+  console.error('❌ Error:');
 })
 
 let endTime = performance.now();
