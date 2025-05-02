@@ -8,8 +8,7 @@ The problem was...
 - We may be continually adding promises
 - We can not run all at once
     - a. because of rate limiting (i had suggested exponential back of with jitter but also wasn't good enough)
-    - b. Obviously our machine or any machine can only do a certain amount at once. ( This i assumed was obvious, but it does raise a good point at understanding how to work out that limit on a running program )
-
+    - b. Obviously our machine or any machine can only do a certain amount at once - but how do we find out that limit?
 
 ### Breaking it down
 
