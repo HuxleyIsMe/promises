@@ -1,7 +1,7 @@
 const createTile = (pokemonJson) => {
   let element = document.createElement('div');
   element.innerHTML = `<div class="tile">
-    <div><img src="${pokemonJson.sprites.front_default}"/></div>
+    <div><img src="${pokemonJson.sprites.front_default || "https://media.tenor.com/S3dxutdK-9AAAAAe/oopsie-oops.png"}"/></div>
     <div>
         <h5>${pokemonJson.name}</h5>
          <h6>${pokemonJson.id}</h6>
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let totalRequests = 0
 
 
-  const {data, addPromises, addPromise} = promiseHandler([], 15)
+  const {data, addPromises} = promiseHandler([], 15)
 
   const fetchPokemon = async (url) => {
 

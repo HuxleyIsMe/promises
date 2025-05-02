@@ -1,7 +1,7 @@
 const createTile = (pokemonJson) => {
     let element = document.createElement('div');
     element.innerHTML = `<div class="tile">
-      <div><img src="${pokemonJson.sprites.front_default}"/></div>
+    <div><img src="${pokemonJson.sprites.front_default || "https://media.tenor.com/S3dxutdK-9AAAAAe/oopsie-oops.png"}"/></div>
       <div>
           <h5>${pokemonJson.name}</h5>
            <h6>${pokemonJson.id}</h6>
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   results.forEach(result => {
     if (result.status === 'fulfilled') {
-      console.log('✅ Success:', result.value);
+      console.log('✅ Success:');
 
 
     } else {
@@ -76,14 +76,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let endTime = performance.now();
   document.getElementById('timer').innerHTML = `Fetched ${totalRequests} requests in ${endTime - start} ms`
-      
-  
-  
-
-
-
-
-
-  
-  
+    
   });
