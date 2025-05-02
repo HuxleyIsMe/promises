@@ -23,5 +23,10 @@ Also promise.allsettled means we need to generate all our promise requests befor
 
 The concurrent promise runner, will run a given amount of promise functions concurrently. This resolves the later part of our problem. We have a way we can control how many promises we are running at one time, this should enable us to avoid issues around rate limiting from upstream servers as well as avoid running to much work on our system at once.
 
-### part one a - how many io connections can our machine even have?
+### part two a - how many io connections can our machine even have?
 
+Lets be clear promises aren't inherently IO operations, however in our context we are using them for data fetching with fetch so they will be running IO operations. I will come back to this one because its super interesting but requires a deep dive into browsers.
+
+### part two b - how can we safely add as we go?
+
+How can we safely add promises to our throttle as we go? how can that return the data correctly and work with in a code base.
