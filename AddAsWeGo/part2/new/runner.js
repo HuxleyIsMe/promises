@@ -169,7 +169,16 @@ const start = performance.now();
 totalRequests++
 await fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
 
-await data
+const {results, failures} =  await data
+
+
+results.forEach(result => {
+    console.log('✅ Success:', result);
+})
+
+failures.forEach(result => {
+  console.error('❌ Error:', result);
+})
 
 let endTime = performance.now();
 document.getElementById('timer').innerHTML = `Fetched ${totalRequests} requests in ${endTime - start} ms`

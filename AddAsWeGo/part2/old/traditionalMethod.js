@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return async () => {
                 let res = await fetch(url)
                 let results = await res.json();
+                createTile(results)
+
                 return results
             }
         })
@@ -65,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   results.forEach(result => {
     if (result.status === 'fulfilled') {
       console.log('✅ Success:', result.value);
-      createTile(result.value)
 
 
     } else {
