@@ -1,4 +1,23 @@
-// import {createTile} from "./createTile"
+// let last = performance.now();
+// setInterval(() => {
+//   const now = performance.now();
+//   const delay = now - last - 1000;
+//   last = now;
+//   if (delay > 200) {
+//     console.warn(`Event loop is lagging by ${delay.toFixed(2)}ms`);
+//   }
+// }, 1000);
+
+// if (performance.memory) {
+//   setInterval(() => {
+//     const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = performance.memory;
+//     console.log(`Used JS Heap: ${(usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`);
+//     console.log(`Total JS Heap: ${(totalJSHeapSize / 1024 / 1024).toFixed(2)} MB`);
+//     console.log(`Heap Size Limit: ${(jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`);
+//   }, 1000);
+// } else {
+//   console.log('performance.memory is not available in this browser');
+// }
 
 const createTile = (pokemonJson) => {
   let element = document.createElement('div');
@@ -124,6 +143,7 @@ const promiseHandler = (promises, concurrency) => {
 };
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
 
   console.log('contents of the dom has been loaded so lets run')
@@ -174,7 +194,7 @@ fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
     console.error('oh nooo', error)
   }).finally(()=> {
     let endTime = performance.now();
-    document.getElementById('timer').innerHTML = `<h2>Fetched ${totalRequests} requests in ${endTime - start} ms</h2>`
+    document.getElementById('timer').innerHTML = `Fetched ${totalRequests} requests in ${endTime - start} ms`
   })
 
 
