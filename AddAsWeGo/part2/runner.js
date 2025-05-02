@@ -1,3 +1,21 @@
+// import {createTile} from "./createTile"
+
+const createTile = (pokemonJson) => {
+  console.log(pokemonJson.name)
+
+  let element = document.createElement('div');
+
+  element.innerHTML = `<div class="tile">
+    <div><img src="${pokemonJson.sprites.front_default}"/></div>
+    <div>
+        <h5>${pokemonJson.name}</h5>
+    </div>
+  </div>`
+
+  document.getElementById('pokemon-container').appendChild(element.firstChild)
+}
+
+
 /**
  * Alright we have a way to add as we go, but we are still awaiting to return the results to our program... however we urgh don't need that
  * we could actually just return the data as it comes. To me this is making me think we need a way to be able to feed back to the outside consumer 
@@ -98,54 +116,56 @@ const promiseHandler = (promises, concurrency) => {
 
 
   const addPromises = (promises) => {
-
-      pendingPromises.push(...promises)
-      
-     
+      pendingPromises.push(...promises) 
       bootRunner()
-
-
   }
   
   return { data : emptyPromise, addPromise, addPromises};
 };
 
 
-(async () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-// hook up our promise resolver
+  console.log('contents of the dom has been loaded so lets run')
 
 
 
 const {data, addPromises} = promiseHandler([],5)
 
+const fetchPokemon = (url) => {
+  fetch(url).then((res) => {
+    if(!res.ok) {
+      throw new Error(`Request failed with status ${res.status}`);
+    }
+     return res.json()
+  }).then((res) => {
+    let {results, next} = res
+    let nextBatch = results.map(({url}) => { 
+      return () => fetch(url).then((res) => {
+         return res.json()}).then((res) => {
+          createTile(res)
+          return res
+         })
+      })
+    addPromises(nextBatch);
+    if(next) {
+      fetchPokemon(next)
+    }
+    return res
+  }).catch((err) => {
+    console.error('oh no im not working', err.message)
+  })
 
-fetch('https://pokeapi.co/api/v2/pokemon/').then((res) => {
-  if(!res.ok) {
-    console.log('mistake')
-    throw new Error(`Request failed with status ${res.status}`);
-  }
-   return res.json()
-}).then((res) => {
-  let {results} = res
-  let nextBatch = results.map(({url}) => 
-    () => fetch(url).then((res) => {
-       return res.json()}).then((res) => {
-        return res
-       })
-  )
-  addPromises(nextBatch);
-  return res
-}).catch((err) => {
-  console.error('oh no im not working', err.message)
-})
+}
 
-  const res = await data
+fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
 
-  console.log({res})
+  data.then((res) => {
+    console.log('ran everything ok')
+  })
 
 
-})()
+});
 
 
 /** Alright we run into our first big change how we kick of this runner 
@@ -156,6 +176,11 @@ fetch('https://pokeapi.co/api/v2/pokemon/').then((res) => {
 /**
  * Ik great now we have  a whole batch of pokemon but as we can see its kinda long doing this json unwrapping business..
  * as im making this handler for fetching data lets just like make the handler handle that
- * It also may be nice to acknowledge this is gonna be used for data fetching
+ * It also may be nice to acknowledge this is gonna be used for data fetching... 
+ * 
+ * but i guess the first thing is letting it do something on resolution 
+ * 
+ * - we could simply provide another callback telling in to add itself as a row in our table? boring but would work. 
+ * - 
  * 
  */

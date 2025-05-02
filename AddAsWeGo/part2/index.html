@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blank Table Page</title>
   <style>
+
+    #pokemon-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .tile {
+      width: 150px;
+      height: 150px;
+      text-align: center;
+      align-items: center;
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+      
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -19,22 +40,11 @@
 
   <h1>My Little promise table</h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>index</th>
-        <th>promise id</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+ 
+  <div id="pokemon-container"></div>
 
-  <script src="./part-2-have-results-as-we-go.js"></script>
+
+  <script src="./runner.js"></script>
 
 </body>
 </html>
