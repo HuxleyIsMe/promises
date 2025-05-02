@@ -106,8 +106,6 @@ const promiseHandler = (promises, concurrency) => {
 
 
   }
-
-  console.log({pendingPromises})
   
   return { data : emptyPromise, addPromise, addPromises};
 };
@@ -151,7 +149,7 @@ fetch('https://pokeapi.co/api/v2/pokemon/').then((res) => {
 
 
 /** Alright we run into our first big change how we kick of this runner 
- * before we gave it inital promise to start it but sadly that not gonna work now
+ * before we gave it initial promise to start it but sadly that not gonna work now
  */
 
 

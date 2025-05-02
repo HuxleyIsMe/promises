@@ -44,8 +44,8 @@ const mockPromises = Array.from({ length: 12 }, (_, i) => () =>
   // here we run the initial promises
   const initialPromises = promises.slice(0, concurrency);
   const pendingPromises = promises.slice(concurrency);   // <---- This here is where the rest of out promises go it could  make sense to add here. 
-  
-  // kick starts the number of promises to run 
+
+// kick starts the number of promises to r un 
   initialPromises.forEach((cb) => {
       runPromise(cb);
   });
