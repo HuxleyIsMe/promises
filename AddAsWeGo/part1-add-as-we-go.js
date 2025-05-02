@@ -5,8 +5,6 @@ const mockPromises = Array.from({ length: 12 }, (_, i) => () =>
 
 /** 
    * Ok step one lets have a away we can continually add to our underlying throttle lib:
-   * 
-   * 
    */
 
   const runConcurrentPromisesContinualAdd = (promises, concurrency) => {
@@ -22,7 +20,6 @@ const mockPromises = Array.from({ length: 12 }, (_, i) => () =>
     let pending = 0;
 
     const runPromise = (cb) => {
-      console.log({cb})
       pending++;
       cb()
         .then((res) => {
@@ -70,14 +67,12 @@ const mockPromises = Array.from({ length: 12 }, (_, i) => () =>
 const otherPromise = () => new Promise((res) => setTimeout(() => res(13), Math.random() * 1000)) // oops i forgot its got to be a promise generator
 
 
-  let {data, addPromise} = runConcurrentPromisesContinualAdd(mockPromises, 3);
+let {data, addPromise} = runConcurrentPromisesContinualAdd(mockPromises, 3);
 
-  console.log('hello', addPromise, data)
+addPromise(otherPromise)
 
-  addPromise(otherPromise)
-
-  const res = await data
-  console.log({ res });
+const res = await data
+console.log({ res });
 
 
 // Huzzah we can add promises as we go! We still need a handy await to resolve the data object returning the results to the context. This is effectively turning everything of
