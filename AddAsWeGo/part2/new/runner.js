@@ -1,24 +1,3 @@
-// let last = performance.now();
-// setInterval(() => {
-//   const now = performance.now();
-//   const delay = now - last - 1000;
-//   last = now;
-//   if (delay > 200) {
-//     console.warn(`Event loop is lagging by ${delay.toFixed(2)}ms`);
-//   }
-// }, 1000);
-
-// if (performance.memory) {
-//   setInterval(() => {
-//     const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = performance.memory;
-//     console.log(`Used JS Heap: ${(usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`);
-//     console.log(`Total JS Heap: ${(totalJSHeapSize / 1024 / 1024).toFixed(2)} MB`);
-//     console.log(`Heap Size Limit: ${(jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`);
-//   }, 1000);
-// } else {
-//   console.log('performance.memory is not available in this browser');
-// }
-
 const createTile = (pokemonJson) => {
   let element = document.createElement('div');
   element.innerHTML = `<div class="tile">
@@ -30,7 +9,6 @@ const createTile = (pokemonJson) => {
   </div>`
   document.getElementById('pokemon-container').appendChild(element.firstChild)
 }
-
 
 /**
  * Alright we have a way to add as we go, but we are still awaiting to return the results to our program... however we urgh don't need that
@@ -144,7 +122,7 @@ const promiseHandler = (promises, concurrency) => {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   console.log('contents of the dom has been loaded so lets run')
 
@@ -152,50 +130,49 @@ document.addEventListener('DOMContentLoaded', () => {
   let totalRequests = 0
 
 
-const {data, addPromises} = promiseHandler([], 15)
+  const {data, addPromises, addPromise} = promiseHandler([], 15)
 
-const fetchPokemon = (url) => {
-  fetch(url).then((res) => {
-    if(!res.ok) {
-      throw new Error(`Request failed with status ${res.status}`);
+  const fetchPokemon = async (url) => {
+
+
+    let page = await fetch(url)
+
+    if (!page.ok) {
+        throw new Error(`Response status: ${page.status}`);
     }
-     return res.json()
-  }).then((res) => {
-    let {results, next} = res
-    let nextBatch = results.map(({url}) => { 
-      totalRequests++
-      return () => fetch(url).then((res) => {
-         return res.json()}).then((res) => {
-          createTile(res)
-          return res
-         })
-      })
-    addPromises(nextBatch);
+
+    const json = await page.json();
+
+    let {results, next} = json
+
+    let nextBatch = results.map(({url}) => {
+        totalRequests++
+        return async () => {
+            fetch(url).then((res) => {
+              return res.json()
+            }).then((res) => {
+              createTile(res)
+              return res
+            })
+        }
+    })
+
     if(next) {
-      totalRequests++
-      fetchPokemon(next)
+        totalRequests++
+        await fetchPokemon(next)
     }
-    return res
-  }).catch((err) => {
-    console.error('oh no im not working', err.message)
-  })
 
+    addPromises(nextBatch);
 }
 
 const start = performance.now();
 totalRequests++
-fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
+await fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
 
+await data
 
-
-  data.then((res) => {
-    console.log('ran everything ok')
-  }).catch(err => {
-    console.error('oh nooo', error)
-  }).finally(()=> {
-    let endTime = performance.now();
-    document.getElementById('timer').innerHTML = `Fetched ${totalRequests} requests in ${endTime - start} ms`
-  })
+let endTime = performance.now();
+document.getElementById('timer').innerHTML = `Fetched ${totalRequests} requests in ${endTime - start} ms`
 
 
 });
