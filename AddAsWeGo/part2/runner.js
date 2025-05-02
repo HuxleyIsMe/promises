@@ -1,17 +1,14 @@
 // import {createTile} from "./createTile"
 
 const createTile = (pokemonJson) => {
-  console.log(pokemonJson.name)
-
   let element = document.createElement('div');
-
   element.innerHTML = `<div class="tile">
     <div><img src="${pokemonJson.sprites.front_default}"/></div>
     <div>
         <h5>${pokemonJson.name}</h5>
+         <h6>${pokemonJson.id}</h6>
     </div>
   </div>`
-
   document.getElementById('pokemon-container').appendChild(element.firstChild)
 }
 
@@ -63,6 +60,8 @@ console.log('mounted our script')
 
 const promiseHandler = (promises, concurrency) => {
 
+   let currentConcurrency = concurrency || 3
+
     /** Resolver logic to still enable that eventual resolve behaviour */
     let resolver;
     const emptyPromise = new Promise((res, _) => {
@@ -100,7 +99,8 @@ const promiseHandler = (promises, concurrency) => {
   
   const bootRunner = () => {
     if(!result.results.length && !pending) {
-      let starters = pendingPromises.slice(0, concurrency || 3)
+      let starters = pendingPromises.splice(0, currentConcurrency)
+
       starters.forEach((cb) => {
         runPromise(cb);
     });
@@ -129,8 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('contents of the dom has been loaded so lets run')
 
 
+  let totalRequests = 0
 
-const {data, addPromises} = promiseHandler([],5)
+
+const {data, addPromises} = promiseHandler([], 15)
 
 const fetchPokemon = (url) => {
   fetch(url).then((res) => {
@@ -141,6 +143,7 @@ const fetchPokemon = (url) => {
   }).then((res) => {
     let {results, next} = res
     let nextBatch = results.map(({url}) => { 
+      totalRequests++
       return () => fetch(url).then((res) => {
          return res.json()}).then((res) => {
           createTile(res)
@@ -149,6 +152,7 @@ const fetchPokemon = (url) => {
       })
     addPromises(nextBatch);
     if(next) {
+      totalRequests++
       fetchPokemon(next)
     }
     return res
@@ -158,10 +162,19 @@ const fetchPokemon = (url) => {
 
 }
 
+const start = performance.now();
+totalRequests++
 fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
+
+
 
   data.then((res) => {
     console.log('ran everything ok')
+  }).catch(err => {
+    console.error('oh nooo', error)
+  }).finally(()=> {
+    let endTime = performance.now();
+    document.getElementById('timer').innerHTML = `<h2>Fetched ${totalRequests} requests in ${endTime - start} ms</h2>`
   })
 
 
