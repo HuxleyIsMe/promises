@@ -120,6 +120,8 @@ const promiseHandler = (promises, concurrency) => {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+  
+
 
   console.log('contents of the dom has been loaded so lets run')
 
@@ -158,11 +160,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         totalRequests++
         fetchPokemon(next)
     }
-
+    if(totalRequests < 25) {
+      console.log('running at ', performance.now() - start)
+    }
     addPromises(nextBatch);
 }
 
 const start = performance.now();
+window.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    console.log('Enter key pressed!', performance.now() - start);
+    // Do something here
+  }
+});
 totalRequests++
 await fetchPokemon('https://pokeapi.co/api/v2/pokemon/')
 
