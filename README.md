@@ -22,9 +22,9 @@ Also promise.allsettled means we need to generate all our promise requests befor
 
 The concurrent promise runner, will run a given amount of promise functions concurrently. This resolves the later part of our problem. We have a way we can control how many promises we are running at one time, this should enable us to avoid issues around rate limiting from upstream servers as well as avoid running to much work on our system at once.
 
-### part two a - how many io connections can our machine even have?
+### part two a - how many network connections can our machine even have?
 
-Lets be clear promises aren't inherently IO operations, however in our context we are using them for data fetching with fetch so they will be running IO operations. I will come back to this one because its super interesting but requires a deep dive into browsers.
+Lets be clear promises aren't inherently network operations, however in our context we are using them for data fetching with fetch so they will be running network operations. I will come back to this one because its super interesting but requires a deep dive into browsers.
 
 lol so apparently chrom throttles it to 6 anyway :D hahahaha making our throttler interesting but thats all... I'd like to go deeper into this but until then.
 
