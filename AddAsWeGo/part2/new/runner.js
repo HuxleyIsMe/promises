@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let totalRequests = 0
 
 
-  const {data, addPromises} = promiseHandler([], 12)
+  const {data, addPromises} = promiseHandler([], 5)
 
   const fetchPokemon = async (url) => {
 

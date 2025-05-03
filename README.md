@@ -40,10 +40,7 @@ The results....
 
 ### results....
 
-When testing against the PokeAPI i created a version of fetching using our runner pattern as well as a traditional method of creating all of our promises and running them all in promise.allSettled. Unfortunantly both are delivering similiar speeds, there appears to be no clear winner in which one performs best. Perhaps if more data is added our runner can be more effective... also the promise allsettled is definitly easier to work with. 
+When testing against the PokeAPI i created a version of fetching using our runner pattern as well as a traditional method of creating all of our promises and running them all in promise.allSettled. Unfortunantly both are delivering similiar speeds, there appears to be no clear winner in which one performs best. Perhaps if more data is added our runner can be more effective... also the promise allsettled is definitly easier to work with.
 
-We will need to work out different scenarios to work it out.... however... ours does display data quicker making it look visually quicker.
+What I have realised is that because of the TCP limit of 6 throttling on the frontend doesnt really make sense... the promise runner made here can help in terms of being able to pass it in things whenever this pattern makes more sense on the backend. I have inadvertendly mafde p-limit lol
 
-The biggest culprit is that... word on the street is tht chrome throttles us to have only 6 outbound requests at once, kind or reducing the effectivness of our runner... So we may have to try this on the BE as opposed to the FE.
-
-What is interesting is my method visually appears to be quicker. Test this im going to add an onclick handler to each that should record how long between seeing
