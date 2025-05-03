@@ -35,3 +35,13 @@ How can we safely add promises to our throttle as we go? how can that return the
 We can add as we go that will constantly keep the flow going. right now the bottle neck in speed is communicating the results back to a central place. also i think we can make this more developer friendly in terms of its use i.e.:
 
 it might be nice to return a promise constructor i.e. pablo.get(url, {json, onPrefetch: voidFunction, onCallback: onEnd})
+
+The results.... 
+
+### results....
+
+When testing against the PokeAPI i created a version of fetching using our runner pattern as well as a traditional method of creating all of our promises and running them all in promise.allSettled. Unfortunantly both are delivering similiar speeds, there appears to be no clear winner in which one performs best. Perhaps if more data is added our runner can be more effective...
+
+We will need to work out different scenarios to work it out....
+
+The biggest culprit is that... word on the street is tht chrome throttles us to have only 6 outbound requests at once, kind or reducing the effectivness of our runner... So we may have to try this on the BE as opposed to the FE.
