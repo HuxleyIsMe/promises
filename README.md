@@ -26,6 +26,12 @@ The concurrent promise runner, will run a given amount of promise functions conc
 
 Lets be clear promises aren't inherently IO operations, however in our context we are using them for data fetching with fetch so they will be running IO operations. I will come back to this one because its super interesting but requires a deep dive into browsers.
 
+lol so apparently chrom throttles it to 6 anyway :D hahahaha making our throttler interesting but thats all... I'd like to go deeper into this but until then.
+
 ### part two b - how can we safely add as we go?
 
 How can we safely add promises to our throttle as we go? how can that return the data correctly and work with in a code base.
+
+We can add as we go that will constantly keep the flow going. right now the bottle neck in speed is communicating the results back to a central place. also i think we can make this more developer friendly in terms of its use i.e.:
+
+it might be nice to return a promise constructor i.e. pablo.get(url, {json, onPrefetch: voidFunction, onCallback: onEnd})

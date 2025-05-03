@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let totalRequests = 0
 
 
-  const {data, addPromises} = promiseHandler([], 15)
+  const {data, addPromises} = promiseHandler([], 12)
 
   const fetchPokemon = async (url) => {
 
