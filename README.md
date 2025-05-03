@@ -24,7 +24,7 @@ The concurrent promise runner, will run a given amount of promise functions conc
 
 ### part two a - how many io connections can our machine even have?
 
-Lets be clear promises aren't inherently IO operations, however in our context we are using them for data fetching with fetch so they will be running IO operations. I will come back to this one because its super interesting but requires a deep dive into browsers.
+Lets be clear promises aren't inherently network operations, however in our context we are using them for data fetching with fetch so they will be running network operations. I will come back to this one because its super interesting but requires a deep dive into browsers.
 
 ### part two b - how can we safely add as we go?
 
